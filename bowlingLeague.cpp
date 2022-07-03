@@ -39,7 +39,7 @@ const int BORDER_LENGTH = 75;
 string FILE_NAME = "BowlingScores.txt";
 const string ERROR_MESSAGE = "Error in opening the file";
 const int NUMBER_OF_ROWS = 10;
-const int NUMBER_OF_COLUMNS = 4;
+const int NUMBER_OF_COLUMNS = 5;
 
 //This function is to read and store data into two arrays.
 bool GetBowlingData(string FILE_NAME, string bowlersName[NUMBER_OF_ROWS], int bowlersScores[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS]) {
