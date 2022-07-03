@@ -20,3 +20,6 @@ Your program must contain at least the following functions:
    <br> 2) a function called GetAverageScore that is used to calculate the average bowling score. 
     The function should take as input the populated arrays and return the average score of each bowler in a separate array.
    <br> 3) a function called PrettyPrintResults to output the results, i.e., bowler name, scores and average.
+<br>
+<br>
+EDIT: Modified code so that it calculates the average of 5 bowling scores.
