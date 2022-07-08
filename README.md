@@ -23,3 +23,5 @@ Your program must contain at least the following functions:
 <br>
 <br>
 EDIT: Modified code so that it calculates the average of 5 bowling scores.
+<br>
+EDIT 2: Modifed code so that it includes a struct and calculates 5 bowling scores. 
