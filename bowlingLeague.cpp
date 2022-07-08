@@ -33,7 +33,6 @@ Your program must contain at least the following functions:
 
 using namespace std;
 
-
 //Constant Variables 
 const int BORDER_LENGTH = 75;
 string FILE_NAME = "BowlingScores.txt";
@@ -41,8 +40,16 @@ const string ERROR_MESSAGE = "Error in opening the file";
 const int NUMBER_OF_ROWS = 10;
 const int NUMBER_OF_COLUMNS = 5;
 
+//This structure will hold the bowlers information
+struct playerData
+{
+    string bowlersName = " ";
+    int bowlersScores[NUMBER_OF_COLUMNS]= { };
+    int averageScores = 0;
+};
+
 //This function is to read and store data into two arrays.
-bool GetBowlingData(string FILE_NAME, string bowlersName[NUMBER_OF_ROWS], int bowlersScores[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS]) {
+bool GetBowlingData(string FILE_NAME, playerData player[NUMBER_OF_ROWS]) {
 
     //Declared variables
     ifstream dataInput;
@@ -61,18 +68,18 @@ bool GetBowlingData(string FILE_NAME, string bowlersName[NUMBER_OF_ROWS], int bo
     //Notifies the user that the file they inputed will be analyzed
     cout << endl << "Analyzing file " << "\'" << FILE_NAME << "\'..." << endl;
 
-
     // Seperates each string into their appointed arrays 
-    while (i < NUMBER_OF_ROWS) {
-        dataInput >> bowlersName[i]; // inputs name into each row in the array
-        int x = 0;
-        while (x < NUMBER_OF_COLUMNS) {
-            dataInput >> bowlersScores[i][x]; // inputs scores into each row in the array
-            x++;
+        while (i < NUMBER_OF_ROWS)
+        {
+            dataInput >> player[i].bowlersName; // inputs name into each row in the array
+            int x = 0;
+            while (x < NUMBER_OF_COLUMNS) {
+                dataInput >> player[i].bowlersScores[x]; // inputs scores into each row in the array
+                x++;
+            }
+            i++;
         }
-        i++;
-    }
-
+   
 
     cout << endl;
     dataInput.close(); // Closes the file 
@@ -83,7 +90,7 @@ bool GetBowlingData(string FILE_NAME, string bowlersName[NUMBER_OF_ROWS], int bo
 }
 
 //This function is used to calculate the average bowling score.
-int* GetAverageScore(string bowlersName[NUMBER_OF_ROWS], int bowlersScores[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS]) {
+void GetAverageScore(playerData player[NUMBER_OF_ROWS]) {
     //Declared Variables 
     ifstream dataInput;
     int total = 0;
@@ -92,16 +99,13 @@ int* GetAverageScore(string bowlersName[NUMBER_OF_ROWS], int bowlersScores[NUMBE
     int i = 0;
     int x = 0;
 
-    static int bowlersAverage[NUMBER_OF_ROWS]; // ensures all values when pass through remain for the lifetime of the program
-
-    // Calculates the average score for each player 
+    // Calculates the average score for each player
     while (i < NUMBER_OF_ROWS) {
         while (x < NUMBER_OF_COLUMNS) {
-            number = bowlersScores[i][x];
+            number = player[i].bowlersScores[x];
             total = total + number; // accumulates the players scores 
-            average = total / NUMBER_OF_COLUMNS; // calculates average based on how many scores there are 
-            bowlersAverage[i] = average; // assigns the average to an index 
-            dataInput >> bowlersAverage[i]; // inputs the average into the array 
+            average = total / NUMBER_OF_COLUMNS; // calculates average based on how many scores there are  
+            player[i].averageScores = average; 
             x++;
         }
         total = 0;
@@ -109,35 +113,33 @@ int* GetAverageScore(string bowlersName[NUMBER_OF_ROWS], int bowlersScores[NUMBE
         i++;
     }
 
-
-    return bowlersAverage;
 };
 
 //This function is to output results, i.e., bowler name, scores and average.
-void PrettyPrintResults(string bowlersName[NUMBER_OF_ROWS], int bowlersScores[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS], int bowlersAverage[NUMBER_OF_ROWS]) {
+void PrettyPrintResults(playerData player[NUMBER_OF_ROWS]) {
 
     //Declared Varaibles 
     int i = 0;
     int x = 0;
-
+   
     //Prints out the players name, scores, and average 
     while (i < NUMBER_OF_ROWS) {
         //Prints bowlers name
-        cout << "Bowler: " << bowlersName[i] << " ";
+        cout << "Bowler: " << player[i].bowlersName << " ";
         cout << endl << "Scores: ";
         //Prints bowlers scores
         while (x < NUMBER_OF_COLUMNS) {
-            cout << bowlersScores[i][x] << " ";
+            cout << player[i].bowlersScores[x] << " ";
             x++;
         }
         //Print bowlers average 
-        cout << endl << "Average: " << bowlersAverage[i] << " " << endl;
+        cout << endl << "Average: " << player[i].averageScores << " " << endl;
         cout << endl;
         x = 0;
         i++;
 
     }
-
+    
 
 }
 
@@ -149,10 +151,7 @@ int main()
     int border;
     int halfBorder;
 
-    // Declared arrays
-    string bowlersName[NUMBER_OF_ROWS];
-    int bowlersScores[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS];
-
+    playerData player[NUMBER_OF_ROWS]; // initializes struct by creating an array of objects
 
     //Greets the user when they first run the program 
     greetingMessage = " Welcome to the Bowling League ";
@@ -167,9 +166,10 @@ int main()
     cout << asterisk << right << greetingMessage << asterisk << endl;
     cout << setw(BORDER_LENGTH) << "*" << setfill(' ') << endl;
 
-    GetBowlingData(FILE_NAME, bowlersName, bowlersScores);
-    int* bowlersAverage = GetAverageScore(bowlersName, bowlersScores);
-    PrettyPrintResults(bowlersName, bowlersScores, bowlersAverage);
+  
+    GetBowlingData(FILE_NAME,player);
+    GetAverageScore(player);
+    PrettyPrintResults(player);
 
 
     system("pause");
